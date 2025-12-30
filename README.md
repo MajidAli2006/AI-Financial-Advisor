@@ -6,6 +6,45 @@ A high-performance AI financial tracking app built with Flutter, featuring moder
 ![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?logo=dart)
 ![Riverpod](https://img.shields.io/badge/Riverpod-2.5+-FF6B6B)
 
+## 🎨 UI Preview
+
+FinTalk features a modern dark mode design with neon green accents (#00FFA3), clean typography, and smooth animations. The app is optimized for both mobile and tablet devices.
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+**Features:**
+- Total balance with visibility toggle
+- Interactive spending forecast chart
+- Recent transactions list
+- Bank connection floating action button
+
+### Roast Bot Chat
+![Chat Interface](screenshots/chat.png)
+
+**Features:**
+- AI-powered chat interface
+- Dark-themed message bubbles
+- Contextual financial advice
+- Smooth message animations
+
+### Transactions & Smart Cleaning
+![Transactions](screenshots/transactions.png)
+
+**Features:**
+- AI-cleaned transaction names
+- Sparkle indicators for processed transactions
+- Transaction detail bottom sheet
+- Category suggestions
+
+### Transaction Details
+![Transaction Details](screenshots/transaction_details.png)
+
+**Features:**
+- Original bank text vs cleaned name
+- Category dropdown with AI suggestions
+- Verify button with confetti animation
+
 ## ✨ Features
 
 - **📊 Dashboard**: Financial forecasting with interactive charts
