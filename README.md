@@ -10,6 +10,12 @@ A high-performance AI financial tracking app built with Flutter, featuring moder
 
 FinTalk features a modern dark mode design with neon green accents (#00FFA3), clean typography, and smooth animations. The app is optimized for both mobile and tablet devices.
 
+### App Overview
+
+![FinTalk App Screenshots](screenshots/app-overview.png)
+
+*Complete view of FinTalk across iPhone and iPad devices showcasing Dashboard, Roast Bot Chat, Transactions, and Smart Cleaning features.*
+
 ### Dashboard
 ![Dashboard](screenshots/dashboard.png)
 
