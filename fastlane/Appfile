@@ -1,0 +1,10 @@
+# Appfile for iOS
+# More information: https://docs.fastlane.tools/advanced/#appfile
+
+app_identifier("com.yourcompany.fintalk") # The bundle identifier of your app
+apple_id("your-apple-id@example.com") # Your Apple email address
+team_id("YOUR_TEAM_ID") # Your Apple Developer Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
+

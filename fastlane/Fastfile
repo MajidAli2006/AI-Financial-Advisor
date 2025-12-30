@@ -1,0 +1,156 @@
+# Fastfile for FinTalk App
+# This file contains the fastlane configuration for iOS and Android
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Build and upload iOS app to TestFlight"
+  lane :beta do
+    increment_build_number(
+      xcodeproj: "ios/Runner.xcodeproj"
+    )
+    
+    build_app(
+      workspace: "ios/Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: {
+          "com.yourcompany.fintalk" => "match AppStore com.yourcompany.fintalk"
+        }
+      }
+    )
+    
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Build iOS app for App Store"
+  lane :release do
+    increment_build_number(
+      xcodeproj: "ios/Runner.xcodeproj"
+    )
+    
+    build_app(
+      workspace: "ios/Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store"
+    )
+    
+    upload_to_app_store(
+      force: true,
+      skip_metadata: false,
+      skip_screenshots: false
+    )
+  end
+
+  desc "Run tests"
+  lane :test do
+    run_tests(
+      workspace: "ios/Runner.xcworkspace",
+      scheme: "Runner"
+    )
+  end
+end
+
+platform :android do
+  desc "Build and upload Android app to Play Store (Internal Testing)"
+  lane :beta do
+    gradle(
+      task: "clean",
+      project_dir: "android"
+    )
+    
+    increment_version_code(
+      gradle_file_path: "android/app/build.gradle"
+    )
+    
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "android"
+    )
+    
+    upload_to_play_store(
+      track: "internal",
+      aab: "android/app/build/outputs/bundle/release/app-release.aab",
+      skip_upload_metadata: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+
+  desc "Build and upload Android app to Play Store (Production)"
+  lane :release do
+    gradle(
+      task: "clean",
+      project_dir: "android"
+    )
+    
+    increment_version_code(
+      gradle_file_path: "android/app/build.gradle"
+    )
+    
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "android"
+    )
+    
+    upload_to_play_store(
+      track: "production",
+      aab: "android/app/build/outputs/bundle/release/app-release.aab",
+      skip_upload_metadata: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+
+  desc "Build APK for testing"
+  lane :build_apk do
+    gradle(
+      task: "clean",
+      project_dir: "android"
+    )
+    
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      project_dir: "android"
+    )
+  end
+
+  desc "Run tests"
+  lane :test do
+    gradle(
+      task: "test",
+      project_dir: "android"
+    )
+  end
+end
+
+# Common lanes for both platforms
+desc "Run Flutter tests"
+lane :flutter_test do
+  sh("flutter test")
+end
+
+desc "Run Flutter analyze"
+lane :flutter_analyze do
+  sh("flutter analyze")
+end
+
+desc "Build Flutter app"
+lane :flutter_build do
+  sh("flutter build apk --release") # Android
+  sh("flutter build ios --release") # iOS
+end
+
+desc "Clean build artifacts"
+lane :clean do
+  sh("flutter clean")
+  sh("cd ios && pod deintegrate && pod install")
+end
+

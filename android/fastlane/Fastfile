@@ -1,0 +1,47 @@
+# Android Fastfile
+# This file is specifically for Android builds
+
+default_platform(:android)
+
+platform :android do
+  desc "Build and upload Android app to Play Store (Internal Testing)"
+  lane :beta do
+    gradle(
+      task: "clean",
+      project_dir: "."
+    )
+    
+    increment_version_code(
+      gradle_file_path: "app/build.gradle"
+    )
+    
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "."
+    )
+    
+    upload_to_play_store(
+      track: "internal",
+      aab: "app/build/outputs/bundle/release/app-release.aab",
+      skip_upload_metadata: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+
+  desc "Build APK for testing"
+  lane :build_apk do
+    gradle(
+      task: "clean",
+      project_dir: "."
+    )
+    
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      project_dir: "."
+    )
+  end
+end
+
