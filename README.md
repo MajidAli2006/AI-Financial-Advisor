@@ -18,8 +18,6 @@ FinTalk features a modern dark mode design with neon green accents (#00FFA3), cl
 
 *Complete view of FinTalk across iPhone and iPad devices showcasing Dashboard, Roast Bot Chat, Transactions, and Smart Cleaning features.*
 
-> **Note:** To display the app overview image, add `app-overview.png` to the `screenshots/` folder in the repository.
-
 ### Dashboard
 ![Dashboard](screenshots/dashboard.png)
 
