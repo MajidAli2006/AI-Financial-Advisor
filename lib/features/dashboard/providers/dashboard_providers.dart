@@ -41,3 +41,24 @@ final chartDataProvider = Provider<List<ChartDataPoint>>((ref) {
   ];
 });
 
+/// Provider for monthly budget
+final monthlyBudgetProvider = StateProvider<double>((ref) => 5000.0);
+
+/// Provider for monthly spending
+final monthlySpendingProvider = FutureProvider<double>((ref) async {
+  final repository = ref.watch(transactionRepositoryProvider);
+  final transactions = await repository.getTransactions();
+  
+  final now = DateTime.now();
+  final firstDayOfMonth = DateTime(now.year, now.month, 1);
+  
+  final monthlyTransactions = transactions.where((t) {
+    return t.date.isAfter(firstDayOfMonth) && t.amount < 0;
+  }).toList();
+  
+  return monthlyTransactions.fold<double>(
+    0.0,
+    (sum, transaction) => sum + transaction.amount.abs(),
+  );
+});
+

@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:confetti/confetti.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:fin_talk/core/constants/app_strings.dart';
 import 'package:fin_talk/core/constants/app_constants.dart';
 import 'package:fin_talk/core/design_system/design_system.dart';
 import 'package:fin_talk/shared/widgets/transaction_tile.dart';
-import 'package:fin_talk/shared/widgets/empty_state.dart';
-import 'package:fin_talk/shared/widgets/skeleton_loader.dart';
 import 'package:fin_talk/shared/models/transaction.dart';
 import 'package:fin_talk/features/transactions/repositories/transaction_repository.dart';
-import 'package:fin_talk/features/transactions/providers/transaction_filter_provider.dart';
 
 final transactionsProvider = FutureProvider<List<Transaction>>((ref) async {
   final repository = ref.watch(transactionRepositoryProvider);
@@ -28,8 +25,6 @@ class TransactionsPage extends ConsumerStatefulWidget {
 
 class _TransactionsPageState extends ConsumerState<TransactionsPage> {
   late ConfettiController _confettiController;
-  final TextEditingController _searchController = TextEditingController();
-  bool _showFilters = false;
 
   @override
   void initState() {
@@ -44,13 +39,7 @@ class _TransactionsPageState extends ConsumerState<TransactionsPage> {
   @override
   void dispose() {
     _confettiController.dispose();
-    _searchController.dispose();
     super.dispose();
-  }
-
-  Future<void> _refreshTransactions() async {
-    ref.invalidate(transactionsProvider);
-    await ref.read(transactionsProvider.future);
   }
 
   void _showTransactionDetails(Transaction transaction) {
@@ -86,171 +75,42 @@ class _TransactionsPageState extends ConsumerState<TransactionsPage> {
   @override
   Widget build(BuildContext context) {
     final transactionsAsync = ref.watch(transactionsProvider);
-    final filterState = ref.watch(transactionFilterProvider);
-    final filterNotifier = ref.read(transactionFilterProvider.notifier);
     final repository = ref.read(transactionRepositoryProvider);
+    
+    final transactions = transactionsAsync.when(
+      data: (data) => data,
+      loading: () => <Transaction>[],
+      error: (_, __) => <Transaction>[],
+    );
 
     return Scaffold(
       key: const Key('transactions_scaffold'),
-      appBar: AppBar(
-        title: const Text(AppStrings.transactions),
-        actions: [
-          IconButton(
-            icon: PhosphorIcon(
-              _showFilters ? PhosphorIconsRegular.funnel : PhosphorIconsRegular.funnelSimple,
-              color: _showFilters 
-                  ? Theme.of(context).colorScheme.primary 
-                  : Theme.of(context).colorScheme.onSurface,
-            ),
-            onPressed: () {
-              setState(() {
-                _showFilters = !_showFilters;
-              });
+      body: Stack(
+        children: [
+          ListView.builder(
+            key: const Key('transactions_list'),
+            padding: EdgeInsets.symmetric(vertical: DesignTokens.spacingSM),
+            itemCount: transactions.length,
+            itemBuilder: (context, index) {
+              final transaction = transactions[index];
+              final isCleaned = repository.isCleaned(transaction);
+
+              return _buildTransactionItem(context, transaction, isCleaned, index);
             },
           ),
-        ],
-      ),
-      body: Column(
-        children: [
-          _buildSearchBar(context, filterNotifier),
-          if (_showFilters) _buildFilterChips(context, filterNotifier, filterState),
-          Expanded(
-            child: Stack(
-              children: [
-                transactionsAsync.when(
-                  data: (allTransactions) {
-                    final filtered = filterNotifier.filterTransactions(allTransactions);
-                    
-                    if (filtered.isEmpty) {
-                      return EmptyState(
-                        title: AppStrings.noTransactions,
-                        description: AppStrings.noTransactionsDescription,
-                        icon: PhosphorIconsRegular.magnifyingGlass,
-                        onAction: () {
-                          filterNotifier.clearFilters();
-                          _searchController.clear();
-                        },
-                        actionLabel: AppStrings.retry,
-                      );
-                    }
-
-                    return RefreshIndicator(
-                      onRefresh: _refreshTransactions,
-                      child: ListView.builder(
-                        key: const Key('transactions_list'),
-                        padding: EdgeInsets.symmetric(vertical: DesignTokens.spacingSM),
-                        itemCount: filtered.length,
-                        itemBuilder: (context, index) {
-                          final transaction = filtered[index];
-                          final isCleaned = repository.isCleaned(transaction);
-
-                          return _buildTransactionItem(context, transaction, isCleaned, index);
-                        },
-                      ),
-                    );
-                  },
-                  loading: () => ListView.builder(
-                    padding: EdgeInsets.symmetric(vertical: DesignTokens.spacingSM),
-                    itemCount: 5,
-                    itemBuilder: (context, index) => const TransactionSkeleton(),
-                  ),
-                  error: (error, stack) => EmptyState(
-                    title: 'Error loading transactions',
-                    description: error.toString(),
-                    icon: PhosphorIconsRegular.warning,
-                    onAction: () {
-                      ref.invalidate(transactionsProvider);
-                    },
-                    actionLabel: AppStrings.retry,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: ConfettiWidget(
-                    confettiController: _confettiController,
-                    blastDirection: 3.14 / 2,
-                    maxBlastForce: 5,
-                    minBlastForce: 2,
-                    emissionFrequency: 0.05,
-                    numberOfParticles: 50,
-                    gravity: 0.1,
-                  ),
-                ),
-              ],
+          Align(
+            alignment: Alignment.topCenter,
+            child: ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirection: 3.14 / 2,
+              maxBlastForce: 5,
+              minBlastForce: 2,
+              emissionFrequency: 0.05,
+              numberOfParticles: 50,
+              gravity: 0.1,
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSearchBar(BuildContext context, TransactionFilter filterNotifier) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Padding(
-      padding: EdgeInsets.all(DesignTokens.spacingMD),
-      child: TextField(
-        controller: _searchController,
-        decoration: InputDecoration(
-          hintText: AppStrings.searchTransactions,
-          prefixIcon: PhosphorIcon(
-            PhosphorIconsRegular.magnifyingGlass,
-            color: colorScheme.onSurfaceVariant,
-          ),
-          suffixIcon: _searchController.text.isNotEmpty
-              ? IconButton(
-                  icon: PhosphorIcon(
-                    PhosphorIconsRegular.x,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                  onPressed: () {
-                    _searchController.clear();
-                    filterNotifier.updateSearch('');
-                  },
-                )
-              : null,
-        ),
-        onChanged: (value) {
-          filterNotifier.updateSearch(value);
-        },
-      ),
-    );
-  }
-
-  Widget _buildFilterChips(
-    BuildContext context,
-    TransactionFilter filterNotifier,
-    TransactionFilterState filterState,
-  ) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final categories = [AppStrings.allCategories, ...AppConstants.transactionCategories];
-
-    return Container(
-      height: 60,
-      padding: EdgeInsets.symmetric(horizontal: DesignTokens.spacingMD),
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: categories.map((category) {
-          final isSelected = filterState.selectedCategory == category ||
-              (category == AppStrings.allCategories && filterState.selectedCategory == null);
-          
-          return Padding(
-            padding: EdgeInsets.only(right: DesignTokens.spacingSM),
-            child: FilterChip(
-              label: Text(category),
-              selected: isSelected,
-              onSelected: (selected) {
-                filterNotifier.updateCategory(
-                  category == AppStrings.allCategories ? null : category,
-                );
-              },
-              selectedColor: colorScheme.primary.withOpacity(DesignTokens.opacityDisabled / 4),
-              checkmarkColor: colorScheme.primary,
-            ),
-          );
-        }).toList(),
       ),
     );
   }
@@ -307,7 +167,7 @@ class _TransactionsPageState extends ConsumerState<TransactionsPage> {
                 )
                 .then()
                 .shimmer(
-                  duration: (DesignTokens.durationVerySlow.inMilliseconds +
+                  duration: (DesignTokens.durationVerySlow.inMilliseconds + 
                       DesignTokens.durationNormal.inMilliseconds).ms,
                   color: colorScheme.primary.withOpacity(DesignTokens.opacityDisabled),
                 ),
@@ -467,4 +327,3 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
     );
   }
 }
-

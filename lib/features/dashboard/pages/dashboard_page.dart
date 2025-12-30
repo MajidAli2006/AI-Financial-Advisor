@@ -10,6 +10,7 @@ import 'package:fin_talk/features/dashboard/widgets/bank_connection_modal.dart';
 import 'package:fin_talk/features/dashboard/widgets/balance_header.dart';
 import 'package:fin_talk/features/dashboard/widgets/spending_chart.dart';
 import 'package:fin_talk/features/dashboard/widgets/recent_transactions_section.dart';
+import 'package:fin_talk/features/dashboard/widgets/budget_card.dart';
 
 class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
@@ -23,6 +24,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   Widget build(BuildContext context) {
     final balance = ref.watch(balanceProvider);
     final recentTransactionsAsync = ref.watch(recentTransactionsProvider);
+    final monthlyBudget = ref.watch(monthlyBudgetProvider);
+    final monthlySpendingAsync = ref.watch(monthlySpendingProvider);
 
     return Scaffold(
       key: const Key('dashboard_scaffold'),
@@ -40,6 +43,28 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             child: BalanceHeader(
               key: const Key('balance_header'),
               balance: balance,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: monthlySpendingAsync.when(
+              data: (spent) => BudgetCard(
+                key: const Key('budget_card'),
+                budget: monthlyBudget,
+                spent: spent,
+              )
+                  .animate()
+                  .fadeIn(
+                    duration: DesignTokens.durationVerySlow.inMilliseconds.ms,
+                    delay: DesignTokens.durationNormal.inMilliseconds.ms,
+                  )
+                  .slideY(
+                    begin: 0.1,
+                    end: 0,
+                    duration: DesignTokens.durationVerySlow.inMilliseconds.ms,
+                    delay: DesignTokens.durationNormal.inMilliseconds.ms,
+                  ),
+              loading: () => const SizedBox.shrink(),
+              error: (_, __) => const SizedBox.shrink(),
             ),
           ),
           SliverToBoxAdapter(
