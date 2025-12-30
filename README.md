@@ -6,418 +6,71 @@ A high-performance AI financial tracking app built with Flutter, featuring moder
 ![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?logo=dart)
 ![Riverpod](https://img.shields.io/badge/Riverpod-2.5+-FF6B6B)
 
-## 🚀 Quick Overview
+## ✨ Features
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                                                               │
-│  💰 FinTalk - AI Financial Tracking App                      │
-│                                                               │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
-│  │ 📊 Dashboard │  │ 💬 Roast Bot │  │ 📋 Smart     │     │
-│  │               │  │              │  │    Categories│     │
-│  │ • Balance     │  │ • AI Chat    │  │              │     │
-│  │ • Charts      │  │ • Responses  │  │ • AI Cleaned │     │
-│  │ • Forecast    │  │ • Dark UI    │  │ • Sparkles   │     │
-│  └──────────────┘  └──────────────┘  └──────────────┘     │
-│                                                               │
-│  🎨 Dark Mode  |  🎯 Modern UI  |  ⚡ Smooth Animations      │
-│                                                               │
-└─────────────────────────────────────────────────────────────┘
-```
+- **📊 Dashboard**: Financial forecasting with interactive charts
+- **🤖 Roast Bot Chat**: AI-powered chat interface
+- **🧹 Smart Transaction Categorization**: AI-cleaned transaction names
+- **🏦 Mock Bank Integration**: Simulated bank connection flow
+- **🎨 Modern Animations**: Smooth transitions and interactions
 
-## 🎨 UI Preview
+## 🚀 Quick Start
 
-> **Note**: All screens feature a modern dark mode design with neon green (#00FFA3) accents, smooth animations, and intuitive interactions.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/MajidAli2006/AI-Financial-Advisor.git
+   cd AI-Financial-Advisor
+   ```
 
-### 📊 Dashboard Screen
+2. **Install dependencies**
+   ```bash
+   flutter pub get
+   ```
 
-![Dashboard](screenshots/dashboard.png)
+3. **Generate Riverpod code**
+   ```bash
+   flutter pub run build_runner build --delete-conflicting-outputs
+   ```
 
-**Features:**
-- 💰 Animated balance counter (starts from $0)
-- 👁️ Eye icon to toggle balance visibility
-- 📈 Interactive chart with touch tooltips
-- 📋 Recent transactions with icons
-- 🔌 Floating action button for bank connection
-
----
-
-### 💬 Chat Interface (Roast Bot)
-
-![Chat Interface](screenshots/chat.png)
-
-**Features:**
-- 🤖 AI "Roast Bot" persona
-- 💬 Dark-themed chat bubbles
-- ⚡ Smooth message animations
-- ⌨️ Input field with send button
-- 🎯 Contextual AI responses
-
----
-
-### 📋 Transactions List
-
-![Transactions List](screenshots/transactions.png)
-
-**Features:**
-- ✨ Sparkle icon indicates AI-cleaned transactions
-- 🎨 Color-coded transaction icons
-- 📅 Date formatting
-- 💰 Amount display (green for positive, white for negative)
-- 👆 Tap to view transaction details
-
----
-
-### 📄 Transaction Detail Bottom Sheet
-
-![Transaction Details](screenshots/transaction_details.png)
-
-**Features:**
-- 📝 Shows original bank text vs cleaned name
-- 🏷️ Category dropdown with AI suggestions
-- ✅ Verify button triggers confetti animation
-- 🎉 Success feedback with snackbar
-
----
-
-### 🏦 Bank Connection Modal
-
-![Bank Connection](screenshots/bank_connection.png)
-
-**Features:**
-- 🏦 List of major banks
-- ⏳ Loading indicator during connection
-- ✅ Success message with updated balance
-- 🔄 Automatic navigation back to dashboard
-
----
-
-### 🎨 Design System Overview
-
-**Color Palette:**
-```
-┌─────────────────────────────────────────────────────────┐
-│                                                           │
-│  Primary Green    #00FFA3  ████████████████             │
-│  Background Dark  #121212  ████████████████             │
-│  Card Dark        #1E1E1E  ████████████████             │
-│  Text Primary     #FFFFFF  ████████████████             │
-│  Text Secondary   #B0B0B0  ████████████████             │
-│                                                           │
-└─────────────────────────────────────────────────────────┘
-```
-
-**Typography:**
-- **Font**: Inter (Google Fonts)
-- **Balance**: 36px, Bold
-- **Title**: 20px, Semi-Bold
-- **Body**: 16px, Regular
-- **Caption**: 12px, Regular
-
-**Components:**
-- **Cards**: 16px border radius, dark gray background
-- **Buttons**: 12px border radius, neon green background
-- **Icons**: Phosphor Icons, 24px default size
-- **Spacing**: 8px, 16px, 24px grid system
-
----
-
-### 🎬 User Interactions & Animations
-
-**Dashboard:**
-- Balance counter animates from $0 to final amount on load
-- Chart fades in with slide-up animation
-- Transactions appear with staggered fade-in effect
-- Eye icon toggle smoothly transitions balance visibility
-
-**Chat:**
-- Messages slide in from bottom
-- Typing indicator appears before AI responses
-- Smooth scroll to latest message
-- Input field expands on focus
-
-**Transactions:**
-- List items fade in with horizontal slide
-- Sparkle icons pulse gently on AI-cleaned items
-- Bottom sheet slides up with backdrop blur
-- Confetti animation on verification
-
-**Bank Connection:**
-- Modal slides up from bottom
-- Loading spinner rotates smoothly
-- Success state fades in
-- Balance updates with counter animation
-
-**Navigation:**
-- Page transitions use fade + slide effect
-- Bottom nav bar highlights active tab
-- Smooth tab switching animations
-- Custom page transitions via GoRouter
-
----
-
-### 📸 Adding Screenshots
-
-To capture and add UI screenshots:
-
-1. **Run the app:**
+4. **Run the app**
    ```bash
    flutter run
    ```
 
-2. **Navigate through all features** and capture screenshots:
-   - Dashboard screen
-   - Chat interface
-   - Transactions list
-   - Transaction detail bottom sheet
-   - Bank connection modal
-
-3. **Save screenshots** to the `screenshots/` folder with these names:
-   - `dashboard.png` - Dashboard screen
-   - `chat.png` - Chat interface
-   - `transactions.png` - Transactions list
-   - `transaction_details.png` - Transaction detail bottom sheet
-   - `bank_connection.png` - Bank connection modal
-
-4. **Screenshots are automatically displayed** in the UI Preview section above once added to the `screenshots/` folder.
-
-## ✨ Features
-
-- **📊 Dashboard**: Financial forecasting with interactive charts (fl_chart)
-  - Animated balance counter
-  - Spending history vs predicted spending visualization
-  - Recent transactions preview
-  
-- **🤖 Roast Bot Chat**: AI-powered chat interface using flutter_chat_ui
-  - Contextual AI responses
-  - Dark mode optimized UI
-  - Smooth message animations
-  
-- **🧹 Smart Transaction Categorization**: AI-cleaned transaction names
-  - Visual indicators for AI-processed transactions
-  - Category suggestions
-  - Transaction detail bottom sheet
-  
-- **🏦 Mock Plaid Integration**: Simulated bank connection flow
-  - Bank selection modal
-  - Connection simulation
-  - Balance update after connection
-  
-- **🎨 Modern Animations**: Premium feel with flutter_animate
-  - Page transitions
-  - Staggered list animations
-  - Confetti celebrations
-
 ## 🏗️ Architecture
 
-This project follows **Feature-First Architecture** with clear separation of concerns:
+- **State Management**: Riverpod (Code Generation)
+- **Navigation**: GoRouter
+- **Design System**: Material Design 3 with dark mode
+- **Architecture**: Feature-first folder structure
 
-- **State Management**: Riverpod (Code Generation variant)
-- **Navigation**: GoRouter with custom transitions
-- **Design System**: Dark mode by default with neon green accent (#00FFA3)
-- **Design Patterns**: Repository, Service, Provider, Dependency Injection
+## 📦 Key Dependencies
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed architecture documentation.
-
-**Design System:**
-- Comprehensive design tokens (spacing, colors, typography)
-- Reusable components (`AppCard`, `AppButton`, `AppSpacing`)
-- Material Design 3 compliant
-- Full light/dark theme support
-
-See [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) for complete design system documentation.
+- `flutter_riverpod` - State management
+- `go_router` - Navigation
+- `fl_chart` - Financial charts
+- `flutter_animate` - Animations
+- `flutter_chat_ui` - Chat interface
 
 ## 📁 Project Structure
 
 ```
 lib/
-├── core/                    # Core infrastructure
-│   ├── constants/         # App-wide constants
-│   ├── router/            # Navigation
-│   ├── services/          # Business logic services
-│   └── theme/             # Theming
-├── features/              # Feature modules
-│   ├── auth/
-│   ├── dashboard/
-│   ├── chat/
-│   └── transactions/
-└── shared/                # Shared resources
-    ├── models/
-    └── widgets/
+├── core/           # Core infrastructure
+├── features/       # Feature modules
+└── shared/         # Shared resources
 ```
-
-## 🚀 Setup Instructions
-
-### Prerequisites
-- Flutter SDK 3.0 or higher
-- Dart 3.0 or higher
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd AI-Financial-Advisor
-   ```
-
-2. **Install Dependencies**
-   ```bash
-   flutter pub get
-   ```
-
-3. **Generate Riverpod Code**
-   ```bash
-   flutter pub run build_runner build --delete-conflicting-outputs
-   ```
-
-4. **Run the App**
-   ```bash
-   flutter run
-   ```
-
-### For Development
-
-To watch for changes and auto-generate code:
-```bash
-flutter pub run build_runner watch --delete-conflicting-outputs
-```
-
-## 📦 Key Dependencies
-
-| Package | Purpose |
-|---------|---------|
-| `flutter_riverpod` | State management |
-| `riverpod_annotation` + `riverpod_generator` | Code generation |
-| `go_router` | Navigation |
-| `fl_chart` | Financial charts |
-| `flutter_animate` | Animations |
-| `flutter_chat_ui` | Chat interface |
-| `phosphor_flutter` | Icons |
-| `google_fonts` | Typography (Inter font) |
-| `confetti` | Confetti animations |
-| `intl` | Currency formatting |
-
-## 🎨 Design System
-
-FinTalk uses a comprehensive design system following Material Design 3 principles. See [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) for complete documentation.
-
-### Quick Reference
-
-**Colors:**
-- **Primary**: `#00FFA3` (Neon Green)
-- **Success**: `#00FFA3` (Green)
-- **Error**: `#FF4444` (Red)
-- **Warning**: `#FFB800` (Orange)
-
-**Typography:**
-- **Font Family**: Inter (via Google Fonts)
-- **Scale**: Display (36px), Headline (20-24px), Title (14-18px), Body (12-16px), Label (11-14px)
-
-**Spacing:**
-- **Scale**: 4px base unit (XS: 4px, SM: 8px, MD: 16px, LG: 24px, XL: 32px, XXL: 48px)
-
-**Components:**
-- `AppCard` - Standardized card component
-- `AppButton` - Button with variants (primary, secondary, text) and sizes
-- `AppSpacing` - Consistent spacing widgets
-- Typography system with semantic styles
-
-**Usage:**
-```dart
-import 'package:fin_talk/core/design_system/design_system.dart';
-
-// Use design tokens
-SizedBox(height: DesignTokens.spacingMD)
-
-// Use components
-AppCard(
-  child: YourContent(),
-  padding: EdgeInsets.all(DesignTokens.spacingLG),
-)
-
-// Use typography
-Text('Hello', style: AppTypography.bodyLarge(context))
-
-// Use spacing
-Vertical.md  // or Horizontal.md
-```
-
-## 🧪 Testing
-
-### Running Tests
-```bash
-# Unit tests
-flutter test
-
-# Widget tests
-flutter test test/widget_test.dart
-
-# Integration tests
-flutter test integration_test/
-```
-
-### Test Coverage
-- Services (AI, Bank)
-- Repositories
-- Data Sources
-- Widgets
-
-## 🔧 Development Guidelines
-
-### Code Style
-- Follow [Dart Style Guide](https://dart.dev/guides/language/effective-dart/style)
-- Use `flutter analyze` to check code quality
-- Run `dart format .` before committing
-
-### Adding New Features
-1. Create feature folder in `lib/features/`
-2. Add pages, providers, widgets as needed
-3. Create data sources if data access is needed
-4. Add services for business logic
-5. Update router configuration
-
-### Best Practices
-- ✅ Use abstract classes for services (easy to mock)
-- ✅ Keep providers close to features
-- ✅ Extract constants to `app_constants.dart`
-- ✅ Use meaningful names
-- ✅ Document complex logic
-- ✅ Follow separation of concerns
 
 ## 📝 Notes
 
-- **Backend**: All backend API calls are mocked with realistic dummy data
-- **Bank Integration**: Bank connection flow simulates Plaid integration
-- **AI Responses**: AI responses in chat are hardcoded for demo purposes
-- **Transaction Cleaning**: Uses simple pattern matching (can be enhanced with ML)
-
-## 🗺️ Roadmap
-
-- [ ] Real API integration
-- [ ] Authentication flow
-- [ ] Offline support with local database
-- [ ] Advanced AI transaction categorization
-- [ ] Budget planning features
-- [ ] Export functionality
-- [ ] Multi-currency support
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+- All backend API calls are mocked with realistic dummy data
+- Bank connection flow simulates Plaid integration
+- AI responses are hardcoded for demo purposes
 
 ## 📄 License
 
 This project is licensed under the MIT License.
 
-## 👨‍💻 Author
-
-Built with ❤️ using Flutter
-
 ---
 
-**Note**: This is a frontend-only implementation. All backend services (AI, Banking) are abstracted into Repository classes and mocked with realistic dummy data for demonstration purposes.
+Built with ❤️ using Flutter
